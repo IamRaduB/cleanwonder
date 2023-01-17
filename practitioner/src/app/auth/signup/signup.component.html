@@ -1,0 +1,68 @@
+<app-card [loading]="loader" class="w-80">
+  <h1 header class="px-2 pb-3 border-b border-primary-700 text-center font-bold text-xl text-primary-700">
+    <span *ngIf="step === steps.FORM">Join Medicall</span>
+    <span *ngIf="step === steps.COMPLETE">Thank you</span>
+  </h1>
+  <form *ngIf="step === steps.FORM" body class="mt-3 flex flex-col bg-white" [formGroup]="signupForm"
+        (ngSubmit)="submitSignup()">
+    <app-input type="text" placeholder="E-Mail" name="email" formControlName="email"
+               [hasError]="email?.invalid && (email?.dirty || email?.touched)"
+               [required]="true">
+      <small error *ngIf="email?.invalid && (email?.dirty || email?.touched)"
+             class="alert alert-danger">
+          <span *ngIf="email?.errors?.['required']">
+            E-mail address is required.
+          </span>
+        <span *ngIf="email?.errors?.['email']">
+            E-mail address is invalid.
+          </span>
+      </small>
+    </app-input>
+    <app-input type="password" placeholder="Password" name="password" formControlName="password" class="mt-4"
+               [hasError]="password?.invalid && (password?.dirty || password?.touched)"
+               [required]="true"
+               (input)="repeatPassword?.updateValueAndValidity()">
+      <small error
+             *ngIf="(password?.invalid && (password?.dirty || password?.touched) || (repeatPassword?.invalid && (repeatPassword?.dirty || repeatPassword?.touched)))"
+             class="alert alert-danger">
+          <span *ngIf="password?.errors?.['required']">
+            Password is required.
+          </span>
+        <span *ngIf="password?.errors?.['minLength']">
+            Password should be at least 8 characters long.
+          </span>
+        <span *ngIf="password?.errors?.['passwordStrength']">
+            Password should contain one uppercase and one lowercase character
+          </span>
+        <span *ngIf="repeatPassword?.errors?.['sameAs']">
+            Passwords do not match.
+          </span>
+      </small>
+    </app-input>
+    <app-input type="password" placeholder="Repeat password" name="repeatPassword" formControlName="repeatPassword"
+               class="mt-4"
+               [hasError]="repeatPassword?.invalid && (repeatPassword?.dirty || repeatPassword?.touched)"
+               [required]="true">
+      <small error *ngIf="repeatPassword?.invalid && (repeatPassword?.dirty || repeatPassword?.touched)"
+             class="alert alert-danger">
+          <span *ngIf="repeatPassword?.errors?.['required']">
+            Please repeat your password.
+          </span>
+        <span *ngIf="repeatPassword?.errors?.['sameAs']">
+            Passwords do not match.
+          </span>
+      </small>
+    </app-input>
+
+    <app-button [disabled]="loader || signupForm.invalid" class="mt-4">
+      Sign up
+    </app-button>
+
+    <a routerLink="/auth/login" class="mt-4 text-primary-800 text-center font-semibold" >Already have an account? Log in now!</a>
+  </form>
+  <div *ngIf="step === steps.COMPLETE" body class="mt-3 font-semibold text-lg text-center text-light-700">
+    <p>We have sent an email to <span
+      class="underline text-primary-700">{{ email && email.value ? email.value : '' }}</span>.</p>
+    <p class="mt-4 text-sm">Please click the link in the confirmation e-mail to continue the registration process.</p>
+  </div>
+</app-card>

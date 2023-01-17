@@ -1,0 +1,13 @@
+<label class="flex items-center rounded-sm">
+  <input type="checkbox" class="w-0 h-0 hidden"
+         [required]="required"
+         [ngModel]="checked"
+         (ngModelChange)="onModelChange($event)">
+  <span class="w-4 h-4 p-0.5 border border-light-800 flex items-center justify-center bg-white rounded overflow-hidden">
+    <span *ngIf="checked" class="w-full h-full rounded-sm bg-primary-700"></span>
+  </span>
+
+  <span class="ml-2">
+    <ng-content></ng-content>
+  </span>
+</label>

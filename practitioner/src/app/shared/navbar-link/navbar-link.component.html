@@ -1,0 +1,9 @@
+<a [routerLink]="url"
+   [title]="description"
+   [routerLinkActiveOptions]="{ exact: true }"
+   routerLinkActive="link--active"
+   class="link relative w-16 h-16 flex items-center justify-center transition-colors duration-300 bg-primary-900 hover:bg-primary-800"
+>
+  <span class="absolute h-full left-0 w-1.5 bg-secondary-500"></span>
+  <app-icon [icon]="icon" color="text-white" size="w-6 h-6" ></app-icon>
+</a>

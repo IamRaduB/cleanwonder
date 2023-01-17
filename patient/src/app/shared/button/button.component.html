@@ -1,0 +1,10 @@
+<button [type]="type" [disabled]="disabled" (click)="btnClick.emit()"
+        class="p-3 w-full h-full flex items-center justify-center transform transition-all duration-300 font-semibold text-center"
+        [classList]="rounded"
+        [ngClass]="{
+          'bg-primary-700 hover:bg-primary-600 text-primary-50': !disabled,
+          'bg-light-400 text-light-500': disabled
+        }"
+>
+  <ng-content></ng-content>
+</button>

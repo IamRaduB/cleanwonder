@@ -1,0 +1,22 @@
+<div class="bubble absolute" [ngStyle]="{
+    left: position + '%'
+  }">
+  <div @popIn class="dot w-6 h-6 rounded-full bg-primary-500 shadow-2xl"></div>
+
+  <div @fadeIn
+       class="absolute px-3 py-2 flex-grow-0 flex justify-between space-x-1 border-2 border-primary-500 rounded shadow-xl bg-white"
+       [ngClass]="{
+        'top-10': side === 0,
+        'bottom-10': side !== 0
+       }"
+  >
+    <div class=""><span class="text-xl font-bold leading-4">{{ event.when.format('DD') }}</span></div>
+    <div class="info flex flex-col">
+      <span class="text-md font-semibold leading-tight">{{ event.when.format('dddd') }}</span>
+      <div class="details">
+        <p class="text-xs text-light-400 font-semibold leading-tight">{{ event.when.format('MMM YYYY') }}</p>
+        <p class="text-xs leading-tight font-semibold">{{ event.info }}</p>
+      </div>
+    </div>
+  </div>
+</div>

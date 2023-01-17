@@ -1,0 +1,125 @@
+<app-card [loading]="loader" [ngClass]="{
+  'xl:w-96': step !== steps.FORM
+}">
+  <h1 header class="px-2 pb-3 border-b border-primary-700 text-center font-bold text-xl text-primary-700">
+    <span *ngIf="step === steps.FORM">Complete profile</span>
+    <span *ngIf="step === steps.EXPIRED || step === steps.ALREADY_VALIDATED">Oh, no!</span>
+    <span *ngIf="step === steps.EMAIL_SENT">Success!</span>
+  </h1>
+
+  <form *ngIf="step === steps.FORM" body [formGroup]="registrationForm"
+        class="mt-6 flex flex-col justify-between items-center" (ngSubmit)="completeRegistration()">
+    <div class="grid grid-cols-1 xl:grid-cols-2 max-w-xl items-start justify-between gap-4 xl:space-y-0 xl:gap-8">
+      <div class="flex flex-col" formGroupName="clinic">
+        <h2 class="font-bold text-lg text-primary-700">Clinic details</h2>
+
+        <app-typeahead placeholder="VAT" formControlName="vat" class="mt-4"
+                       [results]="typeaheadResults"
+                       [required]="true" (query)="searchClinic($event)"
+                        (ngModelChange)="prefillClinic($event)"
+        ></app-typeahead>
+
+        <app-input type="text" placeholder="Clinic name" formControlName="name" class="mt-4"
+                   [hasError]="clinicName?.invalid && (clinicName?.dirty || clinicName?.touched)"
+                   [required]="true">
+          <small error *ngIf="clinicName?.invalid && (clinicName?.dirty || clinicName?.touched)"
+                 class="alert alert-danger">
+            <span *ngIf="clinicName?.errors?.['required']">
+              Clinic name is required.
+            </span>
+          </small>
+        </app-input>
+        <app-input type="text" placeholder="Address line 1" formControlName="addressLine1" class="mt-4"
+                   [hasError]="addressLine1?.invalid && (addressLine1?.dirty || addressLine1?.touched)"
+                   [required]="true">
+          <small error *ngIf="addressLine1?.invalid && (addressLine1?.dirty || addressLine1?.touched)"
+                 class="alert alert-danger">
+            <span *ngIf="addressLine1?.errors?.['required']">
+              Address line 1 is required.
+            </span>
+          </small>
+        </app-input>
+        <app-input type="text" placeholder="Address line 2" formControlName="addressLine2" class="mt-4"></app-input>
+
+        <app-textarea type="text" placeholder="Description" formControlName="description" class="mt-4"></app-textarea>
+
+        <app-upload placeholder="Clinic avatar" [url]="logoValue" [uploading]="urlUploading" class="my-4"
+                    [validation]="validUploads.IMAGES"
+                    (clearImage)="registrationForm.get('clinic.logo')?.setValue('')"
+                    (fileSelected)="uploadClinicAvatar($event)"
+        >
+          <span supports class="support text-xs font-semibold">
+            Supports: JPEG, JPG, PNG
+          </span>
+        </app-upload>
+      </div>
+      <div class="flex flex-col">
+        <h2 class="font-bold text-lg text-primary-700">Personal details</h2>
+        <app-input type="text" placeholder="Title" formControlName="title" class="mt-4"
+                   [hasError]="title?.invalid && (title?.dirty || title?.touched)"
+                   [required]="true">
+          <small error *ngIf="title?.invalid && (title?.dirty || title?.touched)"
+                 class="alert alert-danger">
+            <span *ngIf="title?.errors?.['required']">
+              Title is required.
+            </span>
+          </small>
+        </app-input>
+        <app-input type="text" placeholder="First name" formControlName="firstName" class="mt-4"
+                   [hasError]="firstName?.invalid && (firstName?.dirty || firstName?.touched)"
+                   [required]="true">
+          <small error *ngIf="firstName?.invalid && (firstName?.dirty || firstName?.touched)"
+                 class="alert alert-danger">
+            <span *ngIf="firstName?.errors?.['required']">
+              First name is required.
+            </span>
+          </small>
+        </app-input>
+        <app-input type="text" placeholder="Last name" formControlName="lastName" class="mt-4"
+                   [hasError]="lastName?.invalid && (lastName?.dirty || lastName?.touched)"
+                   [required]="true">
+          <small error *ngIf="lastName?.invalid && (lastName?.dirty || lastName?.touched)"
+                 class="alert alert-danger">
+            <span *ngIf="lastName?.errors?.['required']">
+              Last name is required.
+            </span>
+          </small>
+        </app-input>
+        <app-textarea type="text" placeholder="Bio" formControlName="bio" class="mt-4"></app-textarea>
+
+        <app-upload placeholder="Practitioner avatar" [url]="practitionerAvatarUrlValue" [uploading]="urlUploading" class="my-4"
+                    [validation]="validUploads.IMAGES"
+                    (clearImage)="practitionerAvatarUrl?.setValue('')"
+                    (fileSelected)="uploadPractitionerAvatar($event)"
+        >
+          <span supports class="support text-xs font-semibold">
+            Supports: JPEG, JPG, PNG
+          </span>
+        </app-upload>
+      </div>
+    </div>
+
+    <app-checkbox formControlName="tc" [required]="true">I agree to the terms and conditions</app-checkbox>
+    <app-checkbox formControlName="privacy" [required]="true">I agree to the privacy policy</app-checkbox>
+
+    <app-button [disabled]="loader || registrationForm.invalid" class="mt-4 w-full">Save</app-button>
+  </form>
+
+  <div *ngIf="step === steps.EXPIRED" body class="mt-4 text-lg text-center text-light-700">
+    <p>The confirmation link has expired.</p>
+    <p class="mt-3 text-base">Click <a class="font-semibold cursor-pointer" (click)="resendEmail()">here</a> to resend
+      it.</p>
+  </div>
+
+  <div *ngIf="step === steps.ALREADY_VALIDATED" body class="mt-4 text-lg text-center text-light-700">
+    <p>The email address has already been confirmed.</p>
+    <p class="mt-3 text-base">In case you haven't completed your profile, click <a class="font-semibold cursor-pointer"
+                                                                                   (click)="resendEmail()">here</a> to
+      dispatch a new
+      confirmation email and resume the registration process.</p>
+  </div>
+
+  <div *ngIf="step === steps.EMAIL_SENT" body class="mt-4">
+    <p class="text-lg text-center text-light-700">The confirmation email has been successfully dispatched.</p>
+  </div>
+</app-card>

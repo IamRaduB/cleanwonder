@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body {
+  @apply bg-light-50;
+}
+
+.alert {
+  @apply text-xs;
+
+  & span {
+    @apply block;
+  }
+
+  &.alert-danger {
+    @apply text-danger-500;
+  }
+}

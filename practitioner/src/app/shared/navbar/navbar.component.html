@@ -1,0 +1,26 @@
+<div class="fixed flex h-full z-50">
+  <div class="flex flex-col bg-primary-900">
+    <button class="w-16 h-16 flex items-center justify-center transition-colors duration-100 bg-primary-900 text-primary-100 hover:text-white" (click)="toggleSlidingMenu()">
+      <app-icon icon="solid.bars" color="text-inherit" size="w-6 h-6" ></app-icon>
+    </button>
+
+    <app-navbar-link url="/dashboard" icon="solid.house" description="Homepage"></app-navbar-link>
+    <app-navbar-link url="/dashboard/patients" icon="solid.hospital-user" description="Patient overview"></app-navbar-link>
+    <app-navbar-link url="/dashboard/profile" icon="solid.user-doctor" description="Profile"></app-navbar-link>
+    <button class="link relative w-16 h-16 flex items-center justify-center transition-colors duration-300 bg-primary-900 hover:bg-primary-800" (click)="logout()">
+      <app-icon icon="solid.right-from-bracket" color="text-white" size="w-6 h-6"></app-icon>
+    </button>
+  </div>
+
+  <nav [ngClass]="{
+    'slidingMenu--hidden': slidingMenuHidden
+  }" class="slidingMenu flex flex-col bg-primary-800 shadow-xl">
+    <p class="py-5 px-6 font-bold text-white">CleanWonder</p>
+    <a routerLink="/dashboard" class="px-6 py-5 transition-all duration-300 hover:bg-primary-700 text-white font-semibold">Dashboard</a>
+    <a routerLink="/dashboard/patients" class="px-6 py-5 transition-all duration-300 hover:bg-primary-700 text-white font-semibold">Patients</a>
+    <a routerLink="/dashboard/profile" class="px-6 py-5 transition-all duration-300 hover:bg-primary-700 text-white font-semibold">Profile</a>
+    <button class="px-6 py-5 transition-all duration-300 hover:bg-primary-700 text-white text-left font-semibold" (click)="logout()">
+      Logout
+    </button>
+  </nav>
+</div>

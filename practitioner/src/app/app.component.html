@@ -1,0 +1,6 @@
+<ul *ngIf="toasts$ | async as toasts" class="absolute bottom-0 right-4 h-full py-4 flex flex-col justify-end space-y-2 overflow-y-hidden">
+  <li *ngFor="let toast of toasts" class="w-full">
+    <app-toast [toast]="toast"></app-toast>
+  </li>
+</ul>
+<router-outlet></router-outlet>

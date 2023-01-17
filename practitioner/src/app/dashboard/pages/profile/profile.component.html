@@ -1,0 +1,147 @@
+<div *ngIf="profile$ | async as profile" class="pt-4 px-4 w-full flex justify-start items-stretch space-x-8">
+  <app-card rounded="rounded-lg" padding="p-0" class="flex-1">
+    <div header class="px-3 py-3 flex justify-between items-center bg-primary-800">
+      <div class="w-8 h-8 flex rounded overflow-hidden">
+        <img [src]="profile.avatarUrl" alt="Practitioner avatar" class="w-full h-full object-cover object-center" />
+      </div>
+      <h2 class="text-xl font-semibold text-white">Hello, {{ profile.title }} {{ profile.firstName }} {{ profile.lastName }}</h2>
+      <button title="Edit personal details" class="text-white hover:text-primary-100" (click)="toggleProfileEdit()">
+        <app-icon color="text-inherit" icon="solid.pen-to-square" size="w-5 h-5"></app-icon>
+      </button>
+    </div>
+
+    <div *ngIf="!profileEdit" @slideOpen1 body class="p-3">
+      <div class="flex">
+        <label class="flex-shrink-0 font-bold mr-2">Title: </label>
+        <span>{{ profile.title }}</span>
+      </div>
+      <div class="flex">
+        <label class="flex-shrink-0 font-bold mr-2">First name: </label>
+        <span>{{ profile.firstName }}</span>
+      </div>
+      <div class="flex">
+        <label class="flex-shrink-0 font-bold mr-2">Last name: </label>
+        <span>{{ profile.lastName }}</span>
+      </div>
+      <div class="flex">
+        <label class="flex-shrink-0 font-bold mr-2">Bio: </label>
+        <span>{{ profile.bio }}</span>
+      </div>
+    </div>
+
+    <form *ngIf="profileEdit" @slideOpen2 body [formGroup]="profileForm" class="p-3 space-y-4">
+      <app-input type="text" placeholder="Title" formControlName="title"
+                 [hasError]="title?.invalid && (title?.dirty || title?.touched)"
+                 [required]="true">
+        <small error *ngIf="title?.invalid && (title?.dirty || title?.touched)"
+               class="alert alert-danger">
+            <span *ngIf="title?.errors?.['required']">
+              Title is required.
+            </span>
+        </small>
+      </app-input>
+      <app-input type="text" placeholder="First name" formControlName="firstName" class="mt-4"
+                 [hasError]="firstName?.invalid && (firstName?.dirty || firstName?.touched)"
+                 [required]="true">
+        <small error *ngIf="firstName?.invalid && (firstName?.dirty || firstName?.touched)"
+               class="alert alert-danger">
+            <span *ngIf="firstName?.errors?.['required']">
+              First name is required.
+            </span>
+        </small>
+      </app-input>
+      <app-input type="text" placeholder="Last name" formControlName="lastName" class="mt-4"
+                 [hasError]="lastName?.invalid && (lastName?.dirty || lastName?.touched)"
+                 [required]="true">
+        <small error *ngIf="lastName?.invalid && (lastName?.dirty || lastName?.touched)"
+               class="alert alert-danger">
+            <span *ngIf="lastName?.errors?.['required']">
+              Last name is required.
+            </span>
+        </small>
+      </app-input>
+      <app-textarea type="text" placeholder="Bio" formControlName="bio" class="mt-4"></app-textarea>
+
+      <app-upload placeholder="Practitioner avatar" [url]="avatarUrl!.value" [uploading]="urlUploading" class="my-4"
+                  [validation]="validUploads.IMAGES"
+                  (clearImage)="avatarUrl?.setValue('')"
+                  (fileSelected)="uploadPractitionerAvatar($event)"
+      >
+          <span supports class="support text-xs font-semibold">
+            Supports: JPEG, JPG, PNG
+          </span>
+      </app-upload>
+
+      <div class="">
+        <app-button [disabled]="!profileValuesChanged || loading || profileForm.invalid" class="mt-4 w-full" (btnClick)="submitPractitioner()">Update personal details</app-button>
+      </div>
+    </form>
+  </app-card>
+
+  <app-card rounded="rounded-lg" padding="p-0" class="flex-1">
+    <div header class="px-3 py-3 flex justify-between items-center bg-light-700">
+      <div class="w-8 h-8 flex rounded overflow-hidden">
+        <img [src]="profile.clinic.logoUrl" [alt]="profile.clinic.name" class="w-full h-full object-cover object-center" />
+      </div>
+      <h2 class="text-xl font-semibold text-white">{{ profile.clinic.name }}</h2>
+      <button title="Edit clinic details" class="text-white hover:text-light-100" (click)="toggleClinicEdit()">
+        <app-icon color="text-inherit" icon="solid.pen-to-square" size="w-5 h-5"></app-icon>
+      </button>
+    </div>
+
+    <div *ngIf="!clinicEdit" @slideOpen1 body class="px-3 py-3">
+      <div class="flex">
+        <label class="flex-shrink-0 font-bold mr-2">Address line 1: </label>
+        <span>{{ profile.clinic.addressLine1 }}</span>
+      </div>
+      <div class="flex">
+        <label class="flex-shrink-0 font-bold mr-2">Address line 2: </label>
+        <span>{{ profile.clinic.addressLine2 }}</span>
+      </div>
+      <div class="flex">
+        <label class="flex-shrink-0 font-bold mr-2">Description: </label>
+        <span>{{ profile.clinic.description }}</span>
+      </div>
+    </div>
+
+    <form *ngIf="clinicEdit" @slideOpen2 body [formGroup]="clinicForm" class="px-3 py-3 space-y-4">
+      <app-input type="text" placeholder="Clinic name" formControlName="name"
+                 [hasError]="clinicName?.invalid && (clinicName?.dirty || clinicName?.touched)"
+                 [required]="true">
+        <small error *ngIf="clinicName?.invalid && (clinicName?.dirty || clinicName?.touched)"
+               class="alert alert-danger">
+          <span *ngIf="clinicName?.errors?.['required']">
+            Clinic name is required.
+          </span>
+        </small>
+      </app-input>
+      <app-input type="text" placeholder="Address line 1" formControlName="addressLine1"
+                 [hasError]="addressLine1?.invalid && (addressLine1?.dirty || addressLine1?.touched)"
+                 [required]="true">
+        <small error *ngIf="addressLine1?.invalid && (addressLine1?.dirty || addressLine1?.touched)"
+               class="alert alert-danger">
+          <span *ngIf="addressLine1?.errors?.['required']">
+            Address line 1 is required.
+          </span>
+        </small>
+      </app-input>
+      <app-input type="text" placeholder="Address line 2" formControlName="addressLine2"></app-input>
+
+      <app-textarea type="text" placeholder="Description" formControlName="description"></app-textarea>
+
+      <app-upload placeholder="Practitioner avatar" [url]="clinicLogo!.value" [uploading]="urlUploading" class="my-4"
+                  [validation]="validUploads.IMAGES"
+                  (clearImage)="clinicLogo?.setValue('')"
+                  (fileSelected)="uploadClinicAvatar($event)"
+      >
+          <span supports class="support text-xs font-semibold">
+            Supports: JPEG, JPG, PNG
+          </span>
+      </app-upload>
+
+      <div class="">
+        <app-button [disabled]="!clinicValuesChanged || loading || clinicForm.invalid" (btnClick)="submitClinic()">Update clinic details</app-button>
+      </div>
+    </form>
+  </app-card>
+</div>

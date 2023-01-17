@@ -1,0 +1,10 @@
+<div class="px-3 py-2 w-full flex items-center justify-between rounded drop-shadow text-white"
+     [ngClass]="{
+        'bg-primary-400': toast.type === types.SUCCESS,
+        'bg-cyan-300': toast.type === types.INFO,
+        'bg-secondary-400': toast.type === types.WARN,
+        'bg-danger-400': toast.type === types.ERROR }"
+>
+  <span>{{ toast.message }}</span>
+  <button *ngIf="toast.dismissible" class="border-none text-inherit ml-3" (click)="removeToast()">&times;</button>
+</div>

@@ -1,0 +1,24 @@
+<div class="fixed flex h-full z-50">
+  <div class="flex flex-col bg-primary-900">
+    <button class="w-16 h-16 flex items-center justify-center transition-colors duration-100 bg-primary-900 text-primary-100 hover:text-white" (click)="toggleSlidingMenu()">
+      <i class="w-6 h-6 fas fa-bars text-white"></i>
+    </button>
+
+    <app-navbar-link url="/dashboard" icon="fas fa-home" description="Homepage"></app-navbar-link>
+    <app-navbar-link url="/dashboard/profile" icon="fas fa-user" description="Profile"></app-navbar-link>
+    <button class="link relative w-16 h-16 flex items-center justify-center transition-colors duration-300 bg-primary-900 hover:bg-primary-800" (click)="logout()">
+      <i class="w-6 h-6 fas fa-right-from-bracket text-light-50"></i>
+    </button>
+  </div>
+
+  <nav [ngClass]="{
+    'slidingMenu--hidden': slidingMenuHidden
+  }" class="slidingMenu flex flex-col bg-primary-800 shadow-xl">
+    <p class="py-5 px-6 font-bold text-white">CleanWonder</p>
+    <a routerLink="/dashboard" class="px-6 py-5 transition-all duration-300 hover:bg-primary-700 text-white font-semibold">Dashboard</a>
+    <a routerLink="/dashboard/profile" class="px-6 py-5 transition-all duration-300 hover:bg-primary-700 text-white font-semibold">Profile</a>
+    <button class="px-6 py-5 transition-all duration-300 hover:bg-primary-700 text-white text-left font-semibold" (click)="logout()">
+      Logout
+    </button>
+  </nav>
+</div>

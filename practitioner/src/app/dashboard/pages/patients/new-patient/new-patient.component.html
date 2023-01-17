@@ -1,0 +1,111 @@
+<div class="pt-4 px-4 flex justify-start items-stretch space-x-8">
+  <app-card rounded="rounded-lg" padding="p-0" [loading]="loading">
+    <div header class="px-3 py-3 flex items-center justify-center space-x-2 bg-light-700">
+      <app-icon icon="solid.hospital-user" color="text-white" size="w-5 h-5"></app-icon>
+      <h2 class="text-xl font-semibold text-white">Onboard new patient</h2>
+    </div>
+
+    <form body class="px-3 py-3 flex flex-col" [formGroup]="newPatientForm">
+      <div class="grid grid-cols-1 lg:grid-cols-2 lg:gap-4">
+        <div class="">
+          <app-input type="text" name="email" placeholder="E-Mail" formControlName="email"
+                     [hasError]="email?.invalid && (email?.dirty || email?.touched)"
+                     [required]="true">
+            <small error *ngIf="email?.invalid && (email?.dirty || email?.touched)"
+                   class="alert alert-danger">
+          <span *ngIf="email?.errors?.['required']">
+            E-mail address is required.
+          </span>
+              <span *ngIf="email?.errors?.['email']">
+            E-mail address is invalid.
+          </span>
+            </small>
+          </app-input>
+          <app-input type="text" name="firstName" placeholder="First name" formControlName="firstName"
+                     [hasError]="firstName?.invalid && (firstName?.dirty || firstName?.touched)"
+                     [required]="true">
+            <small error *ngIf="firstName?.invalid && (firstName?.dirty || firstName?.touched)"
+                   class="alert alert-danger">
+          <span *ngIf="firstName?.errors?.['required']">
+            Patient first name is required.
+          </span>
+            </small>
+          </app-input>
+
+          <app-input type="text" name="lastName" placeholder="Last name" formControlName="lastName"
+                     [hasError]="lastName?.invalid && (lastName?.dirty || lastName?.touched)"
+                     [required]="true">
+            <small error *ngIf="lastName?.invalid && (lastName?.dirty || lastName?.touched)"
+                   class="alert alert-danger">
+          <span *ngIf="lastName?.errors?.['required']">
+            Patient last name is required.
+          </span>
+            </small>
+          </app-input>
+
+          <app-input type="text" name="phoneNumber" placeholder="Phone number" formControlName="phoneNumber"
+                     [hasError]="phoneNumber?.invalid && (phoneNumber?.dirty || phoneNumber?.touched)"
+                     [required]="true">
+            <small error *ngIf="phoneNumber?.invalid && (phoneNumber?.dirty || phoneNumber?.touched)"
+                   class="alert alert-danger">
+          <span *ngIf="phoneNumber?.errors?.['required']">
+            Phone number is required.
+          </span>
+            </small>
+          </app-input>
+        </div>
+        <div class="">
+          <app-date-input type="text" label="Birth date" formControlName="birthDate"
+                     [hasError]="birthDate?.invalid && (birthDate?.dirty || birthDate?.touched)"
+                     [required]="true">
+            <small error *ngIf="birthDate?.invalid && (birthDate?.dirty || birthDate?.touched)"
+                   class="alert alert-danger">
+              <span *ngIf="birthDate?.errors?.['required']">
+                Birth date is required.
+              </span>
+              <span *ngIf="birthDate?.errors?.['validDate']">
+                The provided birth date is invalid.
+              </span>
+            </small>
+          </app-date-input>
+
+          <app-input type="text" name="ssn" placeholder="Social security number" formControlName="ssn"
+                     [hasError]="ssn?.invalid && (ssn?.dirty || ssn?.touched)"
+                     [required]="true">
+            <small error *ngIf="ssn?.invalid && (ssn?.dirty || ssn?.touched)"
+                   class="alert alert-danger">
+          <span *ngIf="ssn?.errors?.['required']">
+            Social security number is required.
+          </span>
+            </small>
+          </app-input>
+
+          <app-input type="text" name="addressLine1" placeholder="Address line 1" formControlName="addressLine1"
+                     [hasError]="addressLine1?.invalid && (addressLine1?.dirty || addressLine1?.touched)"
+                     [required]="true">
+            <small error *ngIf="addressLine1?.invalid && (addressLine1?.dirty || addressLine1?.touched)"
+                   class="alert alert-danger">
+              <span *ngIf="addressLine1?.errors?.['required']">
+                Address line 1 is required.
+              </span>
+            </small>
+          </app-input>
+
+          <app-input type="text" name="addressLine2" placeholder="Address line 2"
+                     formControlName="addressLine2"></app-input>
+        </div>
+      </div>
+
+      <app-textarea type="text" name="details" placeholder="Details" formControlName="details"></app-textarea>
+
+      <div class="mt-8 flex justify-center">
+        <app-button [disabled]="loading" (btnClick)="onboardPatient()">
+          <span class="flex space-x-2">
+            <app-icon icon="solid.plus" [color]="loading ? 'text-light-300' : 'text-primary-50'" size="w-5 h-5"></app-icon>
+            <span [ngClass]="loading ? 'text-light-300' : 'text-primary-50'">Add patient</span>
+          </span>
+        </app-button>
+      </div>
+    </form>
+  </app-card>
+</div>

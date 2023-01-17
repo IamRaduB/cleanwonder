@@ -1,0 +1,6 @@
+.fab {
+  @apply absolute top-4 right-4 w-12 h-12
+  flex items-center justify-center
+  bg-light-300 bg-opacity-40 hover:bg-light-200 hover:bg-opacity-60
+  transition-all duration-100 rounded-full text-light-50 hover:text-danger-500;
+}

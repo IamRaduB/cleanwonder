@@ -1,0 +1,12 @@
+<label [ngClass]="{ 'text-primary-700': !hasError, 'text-danger-500': hasError }" class="font-semibold">
+  {{placeholder}}<span *ngIf="required">*</span>
+</label>
+<textarea
+       [name]="name"
+       [(ngModel)]="value"
+       class="w-full px-2 py-1 border rounded"
+       [ngClass]="{ 'border-primary-700': !hasError, 'border-danger-500': hasError }"
+       (input)="onInput($event)"
+       (focusout)="onFocus()"
+></textarea>
+<ng-content select="[error]"></ng-content>

@@ -1,0 +1,29 @@
+<label class="font-semibold text-primary-700">{{ placeholder }}</label>
+<div *ngIf="!url" class="dragArea flex flex-col p-0.5 items-center justify-center
+    border border-light-400 rounded-lg overflow-hidden text-primary-700"
+     [ngClass]="{
+      'bg-primary-600': !dragHover,
+      'bg-info-600': dragHover
+     }"
+     (dragover)="dragHover = true" (dragleave)="dragHover = false" (dragend)="dragHover = false" (drop)="upload($event)">
+  <div class="relative py-4 w-full h-full
+      border border-light-400 bg-white rounded bg-primary-50 cursor-pointer">
+    <app-loader *ngIf="uploading"></app-loader>
+    <div class="flex flex-col w-full h-full space-y-2 items-center justify-center" (click)="fileInput.click()">
+      <p class="font-semibold">Drag & Drop</p>
+      <p> or <span class="font-semibold text-info-500">Browse</span></p>
+
+      <input #fileInput type="file" class="opacity-0 w-0 h-0" hidden
+             (change)="upload($event)"/>
+      <ng-content select="[supports]"></ng-content>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="url" class="relative xl:max-h-28 w-full xl:w-36 flex items-center p-0.5 items-center justify-center
+    border border-primary-700 rounded-lg overflow-hidden">
+  <img [src]="url" class="w-full h-full object-cover rounded" />
+  <button class="fab" (click)="clear()">
+    <app-icon icon="solid.trashcan" color="text-inherit"></app-icon>
+  </button>
+</div>

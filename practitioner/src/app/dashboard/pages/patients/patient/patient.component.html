@@ -1,0 +1,9 @@
+<div class="pt-4 px-4 flex justify-start items-stretch space-x-8">
+  <div *ngIf="$patient | async as patient; else noPatient">
+    <h2>Patient {{ patient.firstName }} {{ patient.lastName }}</h2>
+  </div>
+</div>
+
+<ng-template #noPatient>
+  <h2>Patient not found!</h2>
+</ng-template>

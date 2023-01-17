@@ -1,0 +1,4 @@
+<div *ngIf="state === States.LOADING" class="infinite-line">
+  <div class="infinite-line-loader"></div>
+</div>
+<div @draw *ngIf="state === States.LOADED" class="line" (@draw.done)="lineDrawDone($event)"></div>

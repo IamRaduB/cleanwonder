@@ -1,0 +1,80 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CD
+
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: '${{secrets.GH_TOKEN}}'
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v3
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Compile sources
+        run: npm run build
+
+      - name: 'GCP auth for env'
+        id: 'auth'
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{ secrets.SERVICE_ACCOUNT }}'
+
+      - name: Semantic release
+        run: npm run semantic-release
+
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: sources
+          path: |
+            ./
+            !node_modules
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    steps:
+    - name: Download compiled sources
+      id: download
+      uses: actions/download-artifact@v3
+      with:
+        name: sources
+
+    - name: Setup node
+      uses: actions/setup-node@v3
+      with:
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v0'
+      with:
+        credentials_json: '${{ secrets.SERVICE_ACCOUNT }}'
+
+    - id: 'upload-build'
+      name: GCP upload
+      uses: 'google-github-actions/upload-cloud-storage@v0'
+      with:
+        path: '${{steps.download.outputs.download-path}}/dist/patient'
+        destination: 'patient-app'
+        parent: false

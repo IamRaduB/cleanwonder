@@ -1,0 +1,50 @@
+<app-card [loading]="loader" class="w-80">
+  <div header class="px-2 pb-3 border-b border-primary-700 text-center font-bold text-xl text-primary-700">Medicall Login
+  </div>
+  <form body class="mt-3 flex flex-col" [formGroup]="loginForm" (ngSubmit)="submitLogin()">
+    <app-input type="text" name="email" placeholder="E-Mail" formControlName="email"
+               [hasError]="email?.invalid && (email?.dirty || email?.touched)"
+               [required]="true" (change)="notFound = false; incorrect = false;">
+      <small error *ngIf="email?.invalid && (email?.dirty || email?.touched)"
+             class="alert alert-danger">
+          <span *ngIf="email?.errors?.['required']">
+            E-mail address is required.
+          </span>
+      </small>
+    </app-input>
+    <app-input type="password" name="password" placeholder="Password" formControlName="password" class="mt-4"
+               [hasError]="password?.invalid && (password?.dirty || password?.touched)"
+               [required]="true" (change)="notFound = false; incorrect = false;">
+      <small error *ngIf="password?.invalid && (password?.dirty || password?.touched)"
+             class="alert alert-danger">
+          <span *ngIf="password?.errors?.['required']">
+            Password is required.
+          </span>
+      </small>
+    </app-input>
+
+    <small class="alert alert-danger">
+      <span *ngIf="incorrect">
+        Email address or password invalid.
+      </span>
+      <span *ngIf="notFound">
+        Account does not exist.
+      </span>
+    </small>
+
+    <app-button
+      [disabled]="loader || (loginForm.invalid && loginForm.touched && (!email?.errors?.['notFound'] && !password?.errors?.['notFound']))"
+      class="mt-4">
+      Login
+    </app-button>
+
+    <a routerLink="/auth/signup" class="mt-4 text-primary-800 text-center font-semibold">Don't have an account? Sign up
+      now!</a>
+
+    <small *ngIf="resendConfirmation" class="mt-4 text-sm text-danger-500">You must complete your registration to access
+      the portal. Click <a class="font-semibold cursor-pointer" (click)="resendEmail()">here</a> to resend the
+      confirmation email.</small>
+
+    <a routerLink="/auth/forgot-password" class="mt-4 text-primary-800 text-center font-semibold">Forgot password?</a>
+  </form>
+</app-card>

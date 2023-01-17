@@ -1,0 +1,21 @@
+<div class="relative">
+  <label class="font-semibold text-primary-700">
+    {{placeholder}}<span *ngIf="required">*</span>
+  </label>
+  <input type="text" class="w-full px-2 py-1 rounded outline-none border border-primary-700"
+         [formControl]="searchValue"
+         (focusout)="onBlur()"
+         (focusin)="onFocus()"
+  />
+  <ul *ngIf="canExpand && results && results.length" @slideOpen class="absolute top-full w-full
+    rounded bg-white py-2 border border-primary-700 overflow-hidden drop-shadow-xl">
+    <li *ngFor="let item of results"
+        class="px-2 py-1 flex items-center cursor-pointer font-semibold text-primary-700 hover:bg-primary-50"
+        (click)="selectResult($event, item)">
+      <img *ngIf="item.logoUrl" [src]="item.logoUrl" class="h-8 w-8 object-cover rounded-full" alt="Image" />
+      <app-icon *ngIf="!item.logoUrl" icon="solid.hospital" color="text-light-700" size="w-8 h-8"></app-icon>
+      <span class="ml-3">{{ item.label }}</span>
+    </li>
+  </ul>
+</div>
+

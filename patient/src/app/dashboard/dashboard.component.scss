@@ -1,0 +1,12 @@
+:host {
+  @apply w-full h-full;
+}
+
+.timeline {
+  @apply relative px-4 flex flex-col items-center justify-center h-64 w-full;
+  & .segment {
+    height: 6px;
+    @apply w-full bg-primary-400;
+  }
+
+}

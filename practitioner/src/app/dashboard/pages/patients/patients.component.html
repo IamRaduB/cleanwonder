@@ -1,0 +1,34 @@
+<div class="p-4 flex flex-col">
+  <div class="flex">
+    <app-button (btnClick)="toOnboard()">
+      <span class="flex items-center space-x-2">
+        <app-icon icon="solid.hospital-user" size="w-4 h-4" color="text-primary-50"></app-icon>
+        <span>Onboard new patient</span>
+      </span>
+    </app-button>
+  </div>
+
+  <div *ngIf="patients$ | async as patients; else noPatients" class="w-full py-4">
+    <div class="w-full px-4 py-2 grid grid-cols-6 gap-2 bg-primary-600 divide-x divide-primary-500 text-primary-50 transform transition duration-300">
+      <span class="text-center font-semibold">Id</span>
+      <span class="text-center font-semibold">First name</span>
+      <span class="text-center font-semibold">Last name</span>
+      <span class="text-center font-semibold">E-mail</span>
+      <span class="text-center font-semibold">Phone number</span>
+      <span class="text-center font-semibold">State</span>
+    </div>
+    <div *ngFor="let patient of patients" class="w-full px-4 grid grid-cols-6 gap-2 bg-primary-50 hover:bg-primary-100 transform transition duration-300 cursor-pointer" (click)="goToPatient(patient)">
+      <span class="px-2 py-2 text-right">{{ patient.id }}</span>
+      <span class="px-2 py-2">{{ patient.firstName }}</span>
+      <span class="px-2 py-2">{{ patient.lastName }}</span>
+      <span class="px-2 py-2">{{ patient.user.email }}</span>
+      <span class="px-2 py-2">{{ patient.phoneNumber }}</span>
+      <span class="px-2 py-2">{{ patientState(patient.user.emailState) }}</span>
+    </div>
+  </div>
+
+  <ng-template #noPatients>
+    No patients onboarded
+  </ng-template>
+</div>
+

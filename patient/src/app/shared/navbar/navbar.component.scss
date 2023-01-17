@@ -1,0 +1,16 @@
+:host {
+  height: 100%;
+}
+
+.slidingMenu {
+  @apply overflow-x-hidden transition-all duration-300;
+  width: 10rem;
+
+  -webkit-box-shadow: 15px 0px 21px -14px rgba(0,0,0,0.65);
+  -moz-box-shadow: 15px 0px 21px -14px rgba(0,0,0,0.65);
+  box-shadow: 15px 0px 21px -14px rgba(0,0,0,0.65);
+
+  &--hidden {
+    width: 0;
+  }
+}

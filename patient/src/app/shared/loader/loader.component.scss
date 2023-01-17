@@ -1,0 +1,33 @@
+.loaderContainer {
+  @apply w-full h-full absolute top-0 left-0
+    flex justify-center items-center
+    bg-white bg-opacity-50 z-50;
+}
+
+.loader {
+  @apply absolute h-1 rounded-sm top-0 left-0 right-full bottom-0 w-1/2 bg-secondary-400;
+  animation: slidingBar 1s linear infinite;
+}
+
+@keyframes slidingBar {
+  0% {
+    left: 0%;
+    right: 100%;
+    width: 0%;
+  }
+  10% {
+    left: 0%;
+    right: 75%;
+    width: 25%;
+  }
+  90% {
+    right: 0%;
+    left: 75%;
+    width: 25%;
+  }
+  100% {
+    left: 100%;
+    right: 0%;
+    width: 0%;
+  }
+}

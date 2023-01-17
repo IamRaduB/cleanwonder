@@ -1,0 +1,42 @@
+:host {
+  @apply relative w-full flex items-center;
+
+  & .infinite-line {
+    height: 6px;
+    @apply absolute top-0 left-0 w-full;
+
+    &-loader {
+      @apply absolute rounded-sm top-0 left-0 right-full bottom-0 w-1/2 bg-primary-500;
+      animation: slidingBar 4s linear infinite;
+    }
+  }
+
+  & .line {
+    height: 6px;
+    @apply w-full relative bg-primary-500;
+  }
+}
+
+
+@keyframes slidingBar {
+  0% {
+    left: 0%;
+    right: 100%;
+    width: 0%;
+  }
+  10% {
+    left: 0%;
+    right: 75%;
+    width: 25%;
+  }
+  90% {
+    right: 0%;
+    left: 75%;
+    width: 25%;
+  }
+  100% {
+    left: 100%;
+    right: 0%;
+    width: 0%;
+  }
+}

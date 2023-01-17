@@ -1,0 +1,11 @@
+<app-navbar></app-navbar>
+<div class="pl-16 w-full h-full">
+  <div class="timeline bg-light-300 drop-shadow-xl">
+    <app-timeline-loader [state]="timelineLoaderState" (stateChanged)="setTimelineLoaderState($event)"></app-timeline-loader>
+    <div class="data relative w-full flex">
+      <div *ngIf="timelineLoaderState === States.DONE" class="segment relative">
+        <app-bubble *ngFor="let bubble of bubbles; let i = index" [event]="bubble" [position]="getPosition(bubble)" [side]="i % 2"></app-bubble>
+      </div>
+    </div>
+  </div>
+</div>

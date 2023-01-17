@@ -1,0 +1,12 @@
+<label [ngClass]="{ 'text-primary-700': !hasError, 'text-danger-500': hasError }" class="font-semibold">
+  {{label}}<span *ngIf="required">*</span>
+</label>
+<input type="text" [placeholder]="format" [(ngModel)]="value"
+       class="w-full px-2 py-1 border rounded"
+       [ngClass]="{ 'border-primary-700': !hasError, 'border-danger-500': hasError }"
+       (input)="parseValue()"
+       (blur)="onBlur()"
+>
+<div class="errors leading-6 min-h-base">
+  <ng-content select="[error]"></ng-content>
+</div>

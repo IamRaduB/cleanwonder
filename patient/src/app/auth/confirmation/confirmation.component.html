@@ -1,0 +1,176 @@
+<div class="w-full h-full flex items-center justify-center">
+  <app-card padding="p-0" rounded="rounded-lg" [loading]="loading" [ngClass]="{
+  'xl:w-96': step !== steps.FORM
+}">
+    <div header class="px-2 py-3 bg-primary-700 text-primary-100 text-center font-bold text-xl">
+      <h1 *ngIf="step === steps.FORM">
+        Welcome to CleanWonder
+      </h1>
+      <h2 *ngIf="step === steps.FORM" class="mt-2 text-base text-primary-100 text-center font-normal">Please confirm your account information</h2>
+
+      <h1 *ngIf="step === steps.EXPIRED || step === steps.ALREADY_VALIDATED">Oh, no!</h1>
+
+      <h1 *ngIf="step === steps.EMAIL_SENT">Success!</h1>
+    </div>
+    <div *ngIf="step === steps.FORM" body class="">
+      <form [formGroup]="confirmationForm" class="px-3 py-3 grid grid-cols-1 lg:grid-cols-2 lg:gap-4"
+            (ngSubmit)="onboardPatient()">
+        <!--  Account credentials  -->
+        <div formGroupName="account" class="">
+          <h2 class="text-lg font-semibold text-center text-green-700 mb-4">Account credentials</h2>
+
+          <app-input type="text" label="E-Mail" formControlName="email"
+                     autocomplete="email"
+                     [hasError]="email.invalid && (email.dirty || email.touched)"
+                     [disabled]="true">
+            <small error *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
+              <span *ngIf="email.errors?.['required']">
+                E-mail address is required.
+              </span>
+              <span *ngIf="email.errors?.['email']">
+                  E-mail address is invalid.
+                </span>
+            </small>
+          </app-input>
+
+          <app-input type="password" label="Password" name="password" formControlName="password"
+                     [hasError]="password.invalid && (password.dirty || password.touched)"
+                     [required]="true"
+                     autocomplete="new-password"
+                     (input)="repeatPassword.updateValueAndValidity()">
+            <small error
+                   *ngIf="(password.invalid && (password.dirty || password.touched) || (repeatPassword.invalid && (repeatPassword.dirty || repeatPassword.touched)))"
+                   class="alert alert-danger">
+              <span *ngIf="password.errors?.['required']">
+                Password is required.
+              </span>
+              <span *ngIf="password.errors?.['minLength']">
+                Password should be at least 8 characters long.
+              </span>
+              <span *ngIf="password.errors?.['passwordStrength']">
+                Password should contain one uppercase and one lowercase character
+              </span>
+              <span *ngIf="repeatPassword.errors?.['sameAs']">
+                Passwords do not match.
+              </span>
+            </small>
+          </app-input>
+
+          <app-input type="password" label="Repeat password" name="repeatPassword" formControlName="repeatPassword"
+                     [hasError]="repeatPassword.invalid && (repeatPassword.dirty || repeatPassword.touched)"
+                     [required]="true">
+            <small error *ngIf="repeatPassword.invalid && (repeatPassword.dirty || repeatPassword.touched)"
+                   class="alert alert-danger">
+              <span *ngIf="repeatPassword.errors?.['required']">
+                Please repeat your password.
+              </span>
+              <span *ngIf="repeatPassword.errors?.['sameAs']">
+                Passwords do not match.
+              </span>
+            </small>
+          </app-input>
+        </div>
+
+        <!--  Profile details  -->
+        <div formGroupName="profile" class="">
+          <h2 class="text-lg font-semibold text-center text-green-700 mb-4">Profile information</h2>
+          <app-input type="text" label="First name" formControlName="firstName"
+                     [hasError]="firstName.invalid && (firstName.dirty || firstName.touched)"
+                     [required]="true">
+            <small error *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" class="alert alert-danger">
+              <span *ngIf="firstName.errors?.['required']">
+                Patient first name is required.
+              </span>
+            </small>
+          </app-input>
+          <app-input type="text" label="Last name" formControlName="lastName"
+                     [hasError]="lastName.invalid && (lastName.dirty || lastName.touched)"
+                     [required]="true">
+            <small error *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" class="alert alert-danger">
+              <span *ngIf="lastName.errors?.['required']">
+                Patient last name is required.
+              </span>
+            </small>
+          </app-input>
+
+          <app-input type="text" label="Birth date" formControlName="birthDate"
+                     [hasError]="birthDate.invalid && (birthDate.dirty || birthDate.touched)"
+                     [required]="true">
+            <small error *ngIf="birthDate.invalid && (birthDate.dirty || birthDate.touched)" class="alert alert-danger">
+              <span *ngIf="birthDate.errors?.['required']">
+                Patient birth date is required.
+              </span>
+            </small>
+          </app-input>
+
+          <app-input type="text" label="Social security number" formControlName="ssn"
+                     [hasError]="ssn.invalid && (ssn.dirty || ssn.touched)"
+                     [required]="true">
+            <small error *ngIf="ssn.invalid && (ssn.dirty || ssn.touched)" class="alert alert-danger">
+              <span *ngIf="ssn.errors?.['required']">
+                Patient ssn is required.
+              </span>
+            </small>
+          </app-input>
+
+          <app-input type="text" label="Phone number" formControlName="phoneNumber"
+                     [hasError]="phoneNumber.invalid && (phoneNumber.dirty || phoneNumber.touched)"
+                     [required]="true">
+            <small error *ngIf="phoneNumber.invalid && (phoneNumber.dirty || phoneNumber.touched)"
+                   class="alert alert-danger">
+              <span *ngIf="phoneNumber.errors?.['required']">
+                Patient phone number is required.
+              </span>
+            </small>
+          </app-input>
+
+          <app-input type="text" label="Address line 1" formControlName="addressLine1"
+                     [hasError]="addressLine1.invalid && (addressLine1.dirty || addressLine1.touched)"
+                     [required]="true">
+            <small error *ngIf="addressLine1.invalid && (addressLine1.dirty || addressLine1.touched)"
+                   class="alert alert-danger">
+              <span *ngIf="addressLine1.errors?.['required']">
+                Patient address is required.
+              </span>
+            </small>
+          </app-input>
+
+          <app-input type="text" label="Address line 2" formControlName="addressLine2"
+                     [hasError]="addressLine2.invalid && (addressLine2.dirty || addressLine2.touched)">
+          </app-input>
+
+          <app-upload placeholder="Clinic avatar" [url]="avatarUrl.value" [uploading]="urlUploading" class="my-4"
+                      [validation]="validUploads.IMAGES"
+                      (clearImage)="avatarUrl.setValue('')"
+                      (fileSelected)="uploadPatientAvatar($event)"
+          >
+          <span supports class="support text-xs font-semibold">
+            Supports: JPEG, JPG, PNG
+          </span>
+          </app-upload>
+        </div>
+      </form>
+
+      <div class="my-4 flex justify-center">
+        <div class="">
+          <app-button rounded="rounded" [disabled]="loading || confirmationForm.invalid" (btnClick)="onboardPatient()">
+            <span class="flex items-center space-x-2">
+              <i class="fas fa-save"></i>
+              <span [ngClass]="loading ? 'text-light-300' : 'text-primary-50'">Confirm details</span>
+            </span>
+          </app-button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="step === steps.EXPIRED" body class="px-2 py-3 my-4 text-lg text-center text-light-700">
+      <p>The confirmation link has expired.</p>
+      <p class="mt-3 text-base">Click <a class="font-semibold cursor-pointer" (click)="resendEmail()">here</a> to resend
+        it.</p>
+    </div>
+
+    <div *ngIf="step === steps.EMAIL_SENT" body class="px-2 py-3 my-4">
+      <p class="text-lg text-center text-light-700">The confirmation email has been successfully dispatched.</p>
+    </div>
+  </app-card>
+</div>

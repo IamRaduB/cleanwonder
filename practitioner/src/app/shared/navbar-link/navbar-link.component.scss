@@ -1,0 +1,13 @@
+.link {
+  &--active {
+    @apply border-l-4 border-secondary-600 bg-primary-800;
+
+    & span {
+      @apply block;
+    }
+  }
+
+  & span {
+    @apply hidden;
+  }
+}
